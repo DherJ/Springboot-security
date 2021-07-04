@@ -1,5 +1,6 @@
 package com.springsecurity.api.security;
 
+import com.springsecurity.api.models.ERole;
 import com.springsecurity.api.security.jwt.AuthEntryPointJwt;
 import com.springsecurity.api.security.jwt.AuthTokenFilter;
 import com.springsecurity.api.security.services.UserDetailsServiceImpl;
@@ -52,7 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers("/api/admin/**").hasAuthority("ADMIN").and()
+                .authorizeRequests().antMatchers("/api/admin/**").hasAuthority(ERole.ADMIN.name()).and()
                 .authorizeRequests().antMatchers("/api/message/**").anonymous().and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()
