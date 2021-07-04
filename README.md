@@ -10,3 +10,10 @@ Postgres data base named testdb
 scripts to init data in test/resources/data.sql
 
 Config available in src/resources/application.properties
+
+
+## Authorithies management
+
+Authorities of user are stored in table 'user_roles';
+
+Spring security check the authorities of connected user to define if he has rights to acces on api resource in WebSecurityConfig
