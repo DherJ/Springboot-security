@@ -1,18 +1,17 @@
 
-
 CREATE TABLE users
 (
     username character varying(20) NOT NULL,
     password character varying(120) NOT NULL,
     email character varying(50) NOT NULL,
-    id integer NOT NULL,
+    id integer SERIAL NOT NULL,
     CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
 CREATE TABLE roles
 (
     name character varying(20) NOT NULL,
-    id integer NOT NULL,
+    id integer SERIAL NOT NULL,
     CONSTRAINT roles_pkey PRIMARY KEY (id)
 );
 
@@ -26,16 +25,16 @@ CREATE TABLE user_roles
     CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users (id)
 );
 
-INSERT INTO roles(id, name) VALUES (1, '"USER"');
-INSERT INTO roles(id, name) VALUES (2, '"MODERATOR"');
-INSERT INTO roles(id, name) VALUES (3, '"ADMIN"');
+INSERT INTO roles(name) VALUES ('"USER"');
+INSERT INTO roles(name) VALUES ('"MODERATOR"');
+INSERT INTO roles(name) VALUES ('"ADMIN"');
 
-INSERT INTO users(id, username,password,email)
-VALUES (1, 'toto','toto', 'toto@toto.com');
-INSERT INTO users(id, username,password,email)
-VALUES (2, 'tata','tata', 'tata@tata.com');
-INSERT INTO users(id, username,password,email)
-VALUES (3, 'titi','titi', 'titi@titi.com');
+INSERT INTO users(username,password,email)
+VALUES ('jerome','$2a$10$3iaM.e/O5IFbYs0wnQEBv.tizF3Fi43VBxmG0CBDbzhgnHraV0VY6', 'jerome@jerome.com');
+INSERT INTO users(username,password,email)
+VALUES ('toto','$2a$10$3iaM.e/O5IFbYs0wnQEBv.tizF3Fi43VBxmG0CBDbzhgnHraV0VY6', 'toto@toto.com');
+INSERT INTO users(username,password,email)
+VALUES ('tata','$2a$10$3iaM.e/O5IFbYs0wnQEBv.tizF3Fi43VBxmG0CBDbzhgnHraV0VY6', 'tata@tata.com');
 
 INSERT INTO user_roles (user_id, role_id) VALUES (1, 1);
 INSERT INTO user_roles (user_id, role_id) VALUES (2, 2);

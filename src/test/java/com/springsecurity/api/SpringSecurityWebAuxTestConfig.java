@@ -3,7 +3,10 @@ package com.springsecurity.api;
 import com.springsecurity.api.security.model.UserDetailsImpl;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
@@ -14,6 +17,19 @@ import java.util.Arrays;
 @TestConfiguration
 public class SpringSecurityWebAuxTestConfig {
 
+    @Bean
+    @Profile("test")
+    public WebSecurityConfigurerAdapter securityDisabled() {
+
+        return new WebSecurityConfigurerAdapter() {
+
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {
+                http.authorizeRequests().anyRequest().permitAll();
+            }
+        };
+    }
+    
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
