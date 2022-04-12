@@ -1,5 +1,6 @@
 package com.springsecurity.api.security;
 
+import com.springsecurity.api.exception.MyAccessDeniedHandler;
 import com.springsecurity.api.models.ERole;
 import com.springsecurity.api.security.jwt.AuthEntryPointJwt;
 import com.springsecurity.api.security.jwt.AuthTokenFilter;
@@ -15,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -44,6 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
+    public AccessDeniedHandler accessDeniedHandler(){
+        return new MyAccessDeniedHandler();
+    }
+    
+    @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -51,9 +58,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and().csrf().disable()
-                .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+                .exceptionHandling().accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                //.authorizeRequests().antMatchers("/api/admin/**").hasAnyAuthority(ERole.MODERATOR.name(), ERole.ADMIN.name()).and()
                 .authorizeRequests().antMatchers("/api/admin/**").hasAnyAuthority(ERole.MODERATOR.name(), ERole.ADMIN.name()).and()
+                .authorizeRequests().antMatchers("/api/pets/**").hasAnyAuthority(ERole.MODERATOR.name(), ERole.ADMIN.name(), ERole.USER.name()).and()
+                .authorizeRequests().antMatchers("/api/roles/**").hasAnyAuthority(ERole.MODERATOR.name(), ERole.ADMIN.name(), ERole.USER.name()).and()
+                .authorizeRequests().antMatchers("GET", "/api/roles/**").permitAll().and()
                 .authorizeRequests().antMatchers("/api/message/**").anonymous().and()
                 .authorizeRequests().antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/test/**").permitAll()

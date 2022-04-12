@@ -1,7 +1,8 @@
 package com.springsecurity.api.controller;
 
-import com.springsecurity.api.models.User;
-import com.springsecurity.api.repository.IUsersRepository;
+import com.springsecurity.api.models.Pet;
+import com.springsecurity.api.repository.IPetsRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -15,43 +16,41 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import payload.response.MessageResponse;
 
-import java.util.List;
-
 @CrossOrigin(maxAge = 3600)
 @RestController
-@RequestMapping("/api/admin/users")
-public class AdminController {
+@RequestMapping("/api/pets")
+public class PetsController {
 
     @Autowired
-    IUsersRepository userRepository;
+    IPetsRepository petsRepository;
 
     @GetMapping("")
     public ResponseEntity<?> findAll() {
-        List<User> users = userRepository.findAll();
-        return ResponseEntity.ok(users);
+        List<Pet> pets = petsRepository.findAll();
+        return ResponseEntity.ok(pets);
     }
 
     @GetMapping(params = {"name"})
-    public ResponseEntity<List<User>> findByName(@RequestParam(name="name") String name) {
-        return ResponseEntity.ok(userRepository.findByContainingName(name));
+    public ResponseEntity<List<Pet>> findByName(@RequestParam(name="name") String name) {
+        return ResponseEntity.ok(petsRepository.findByContainingName(name));
     }
 
     @PatchMapping("")
-    public ResponseEntity<?> updateUser(@RequestBody User user) {
-        userRepository.save(user);
-        return ResponseEntity.ok(new MessageResponse("User updated successfully!"));
+    public ResponseEntity<?> updatePet(@RequestBody Pet pet) {
+        petsRepository.save(pet);
+        return ResponseEntity.ok(new MessageResponse("Pet updated successfully!"));
     }
 
     @DeleteMapping("")
     public ResponseEntity<?> deleteAll() {
-        userRepository.deleteAll();
+        petsRepository.deleteAll();
         return ResponseEntity.ok(new MessageResponse("Users deleted successfully!"));
     }
     
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable(value="id") Long id) {
-        userRepository.deleteById(id);
-        return ResponseEntity.ok(new MessageResponse("User deleted successfully!"));
+        petsRepository.deleteById(id);
+        return ResponseEntity.ok(new MessageResponse("Pet deleted successfully!"));
     }
 
 }
