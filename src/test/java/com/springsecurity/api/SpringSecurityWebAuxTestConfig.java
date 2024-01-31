@@ -1,7 +1,6 @@
 package com.springsecurity.api;
 
 import com.springsecurity.api.models.ERole;
-import com.springsecurity.api.security.model.UserDetailsImpl;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
@@ -16,6 +15,7 @@ import java.util.Collections;
 @TestConfiguration
 public class SpringSecurityWebAuxTestConfig {
 
+	/*
     @Bean
     @Primary
     public UserDetailsService userDetailsService() {
@@ -32,4 +32,5 @@ public class SpringSecurityWebAuxTestConfig {
         
         return new InMemoryUserDetailsManager(Arrays.asList( basicUser, moderatorUser, managerUser ));
     }
+    */
 }
